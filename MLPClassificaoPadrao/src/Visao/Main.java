@@ -48,6 +48,7 @@ public class Main extends javax.swing.JFrame {
     jLabel3 = new javax.swing.JLabel();
     jBtnSalvarTreinamento = new javax.swing.JButton();
     jBtnTreinarMomentum = new javax.swing.JButton();
+    jBtnIniciarPesos = new javax.swing.JButton();
     jPnTreinamento = new javax.swing.JPanel();
     jLabel6 = new javax.swing.JLabel();
     jLabel4 = new javax.swing.JLabel();
@@ -60,7 +61,7 @@ public class Main extends javax.swing.JFrame {
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("MLP para classificação de padrões - Jônatas Trabuco Belotti");
-    setResizable(false);
+    setMinimumSize(new java.awt.Dimension(730, 700));
 
     jPnAbrirArquivo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -92,7 +93,7 @@ public class Main extends javax.swing.JFrame {
     jTxtLogTreinamento.setRows(5);
     jScrollPane1.setViewportView(jTxtLogTreinamento);
 
-    jLabel3.setText("* Treinamento limitado em 10.000 épocas");
+    jLabel3.setText("* Limitado em 10.000 épocas");
 
     jBtnSalvarTreinamento.setText("Salvar");
     jBtnSalvarTreinamento.setEnabled(false);
@@ -110,6 +111,14 @@ public class Main extends javax.swing.JFrame {
       }
     });
 
+    jBtnIniciarPesos.setText("Iniciar pesos");
+    jBtnIniciarPesos.setEnabled(false);
+    jBtnIniciarPesos.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jBtnIniciarPesosActionPerformed(evt);
+      }
+    });
+
     javax.swing.GroupLayout jPnAbrirArquivoLayout = new javax.swing.GroupLayout(jPnAbrirArquivo);
     jPnAbrirArquivo.setLayout(jPnAbrirArquivoLayout);
     jPnAbrirArquivoLayout.setHorizontalGroup(
@@ -123,7 +132,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPnAbrirArquivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                   .addComponent(jLabel1)
                   .addComponent(jLabel2))
-                .addGap(0, 410, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
               .addComponent(jTxtArquivoDadosTreinamento))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jBtnAbrirDadosTreinamento, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -131,6 +140,8 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jLabel3)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jBtnSalvarTreinamento)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jBtnIniciarPesos, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jBtnTreinar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -154,7 +165,8 @@ public class Main extends javax.swing.JFrame {
           .addGroup(jPnAbrirArquivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
             .addComponent(jBtnTreinar)
             .addComponent(jBtnSalvarTreinamento)
-            .addComponent(jBtnTreinarMomentum))
+            .addComponent(jBtnTreinarMomentum)
+            .addComponent(jBtnIniciarPesos))
           .addComponent(jLabel3))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
@@ -211,7 +223,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPnTreinamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(jPnTreinamentoLayout.createSequentialGroup()
                 .addComponent(jLabel4)
-                .addGap(0, 450, Short.MAX_VALUE))
+                .addGap(0, 374, Short.MAX_VALUE))
               .addComponent(jTxtArquivoDadosTeste))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jBtnAbrirDadosTeste, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -304,6 +316,11 @@ public class Main extends javax.swing.JFrame {
     acaoBotaoTreinar(true);
   }//GEN-LAST:event_jBtnTreinarMomentumActionPerformed
 
+  private void jBtnIniciarPesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnIniciarPesosActionPerformed
+    // TODO add your handling code here:
+    iniciarPesos();
+  }//GEN-LAST:event_jBtnIniciarPesosActionPerformed
+
   /**
    * @param args the command line arguments
    */
@@ -345,6 +362,7 @@ public class Main extends javax.swing.JFrame {
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton jBtnAbrirDadosTeste;
   private javax.swing.JButton jBtnAbrirDadosTreinamento;
+  private javax.swing.JButton jBtnIniciarPesos;
   private javax.swing.JButton jBtnSalvarTeste;
   private javax.swing.JButton jBtnSalvarTreinamento;
   private javax.swing.JButton jBtnTestar;
@@ -394,8 +412,7 @@ public class Main extends javax.swing.JFrame {
       }
 
       jTxtArquivoDadosTreinamento.setText(arquivoTreinamento.getCaminhoCompleto());
-      jBtnTreinar.setEnabled(true);
-      jBtnTreinarMomentum.setEnabled(true);
+      jBtnIniciarPesos.setEnabled(true);
     }
 
   }
@@ -456,10 +473,9 @@ public class Main extends javax.swing.JFrame {
   private void treinarRede(boolean momentum) {
     ThreadAcao thread;
 
-    redeMLP = new MLP();
     thread = new ThreadAcao(redeMLP);
     thread.setArquivoTreinamento(arquivoTreinamento);
-    
+
     if (!momentum) {
       thread.setTipoTreinamento(ThreadAcao.TREINAR_NORMAL);
     } else {
@@ -510,10 +526,12 @@ public class Main extends javax.swing.JFrame {
     pasta = this.janelaSalvar.getDirectory();
     nome = this.janelaSalvar.getFile();
 
-    if (pasta != null && nome != null) {
-      if (nome.indexOf(".") == -1) {
-        nome += ".txt";
-      }
+    if (pasta == null || nome == null) {
+      return;
+    }
+
+    if (nome.indexOf(".") == -1) {
+      nome += ".txt";
     }
 
     arquivoSalvar = new Arquivo(pasta, nome);
@@ -523,5 +541,13 @@ public class Main extends javax.swing.JFrame {
     } else {
       JOptionPane.showMessageDialog(null, "Erro ao salvar arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
     }
+  }
+
+  private void iniciarPesos() {
+    Comunicador.setCampo(jTxtLogTreinamento);
+    this.redeMLP = new MLP();
+    jBtnTreinar.setEnabled(true);
+    jBtnTreinarMomentum.setEnabled(true);
+    jBtnSalvarTreinamento.setEnabled(true);
   }
 }

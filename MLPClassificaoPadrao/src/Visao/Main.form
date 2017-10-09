@@ -4,7 +4,9 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="MLP para classifica&#xe7;&#xe3;o de padr&#xf5;es - J&#xf4;natas Trabuco Belotti"/>
-    <Property name="resizable" type="boolean" value="false"/>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[730, 700]"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -70,7 +72,7 @@
                                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="0" pref="410" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jTxtArquivoDadosTreinamento" alignment="0" max="32767" attributes="0"/>
                           </Group>
@@ -81,6 +83,8 @@
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jBtnSalvarTreinamento" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jBtnIniciarPesos" min="-2" pref="125" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jBtnTreinar" min="-2" pref="150" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -110,6 +114,7 @@
                           <Component id="jBtnTreinar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jBtnSalvarTreinamento" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jBtnTreinarMomentum" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jBtnIniciarPesos" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -175,7 +180,7 @@
         </Container>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="* Treinamento limitado em 10.000 &#xe9;pocas"/>
+            <Property name="text" type="java.lang.String" value="* Limitado em 10.000 &#xe9;pocas"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jBtnSalvarTreinamento">
@@ -194,6 +199,15 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBtnTreinarMomentumActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jBtnIniciarPesos">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Iniciar pesos"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBtnIniciarPesosActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -217,7 +231,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="450" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="374" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jTxtArquivoDadosTeste" alignment="0" max="32767" attributes="0"/>
                           </Group>

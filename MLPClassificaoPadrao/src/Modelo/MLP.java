@@ -62,6 +62,7 @@ public class MLP {
     gradienteCamadaEscondida = new double[NUM_NEU_CAMADA_ESCONDIDA];
 
     //Iniciando pesos sinapticos
+    Comunicador.iniciarLog("Iniciando os pesos sinapticos");
     random = new Random();
 
     for (int i = 0; i < NUM_NEU_CAMADA_ESCONDIDA; i++) {
@@ -75,6 +76,10 @@ public class MLP {
         pesosCamadaSaidaInicial[i][j] = random.nextDouble();
       }
     }
+
+    copiarMatriz(pesosCamadaEscondidaInicial, pesosCamadaEscondida);
+    copiarMatriz(pesosCamadaSaidaInicial, pesosCamadaSaida);
+    imprimirPesos();
   }
 
   public boolean treinar(Arquivo arquivoTreinamento) {
@@ -101,11 +106,10 @@ public class MLP {
     
     if (!momentum) {
       fatorMomentum = 0D;
-      Comunicador.addLog("Início treinamento da MLP");
+      Comunicador.iniciarLog("Início treinamento da MLP");
     } else {
       fatorMomentum = FATOR_MOMENTUM;
-      Comunicador.addLog("--------------------------------------");
-      Comunicador.addLog("Início treinamento com MOMENTUM da MLP");
+      Comunicador.iniciarLog("Início treinamento com MOMENTUM da MLP");
     }
 
     Comunicador.addLog(String.format("Erro inicial: %.6f", erroAtual).replace(".", ","));
@@ -151,15 +155,7 @@ public class MLP {
   }
 
   public boolean treinarMomentum(Arquivo arquivoTreinamento) {
-    if (!treinar(arquivoTreinamento, false)) {
-      return false;
-    }
-    
-    if (!treinar(arquivoTreinamento, true)) {
-      return false;
-    }
-    
-    return true;
+    return treinar(arquivoTreinamento, true);
   }
 
   public void testar(Arquivo arquivoTreinamento) {
@@ -168,11 +164,16 @@ public class MLP {
     String linha;
     String esperada;
     String resposta;
-
-    int erros = 0;
+    boolean errou;
+    int amostrasErradas;
+    int numAmostras;
+    double porcAcerto;
+    
+    numAmostras = 0;
+    amostrasErradas = 0;
 
     Comunicador.iniciarLog("Início teste da MLP");
-    Comunicador.addLog("Resposta - Saída rede          Erro");
+    Comunicador.addLog("d1 d2 d3 -- y1 y2 y3");
 
     try {
       arq = new FileReader(arquivoTreinamento.getCaminhoCompleto());
@@ -184,28 +185,35 @@ public class MLP {
       }
 
       while (linha != null) {
+        numAmostras++;
         separarEntradas(linha);
 
         calcularSaidas();
 
         esperada = "";
         resposta = "";
+        errou = false;
         for (int i = 0; i < NUM_NEU_CAMADA_SAIDA; i++) {
-          esperada += String.format("%.0f ", saidaEsperada[i]);
-          resposta += String.format("%d ", posProcessamento(saidaCamadaSaida[i]));
+          esperada += String.format("%.0f   ", saidaEsperada[i]);
+          resposta += String.format("%d   ", posProcessamento(saidaCamadaSaida[i]));
 
           if (saidaEsperada[i] != posProcessamento(saidaCamadaSaida[i])) {
-            erros++;
+            errou = true;
           }
         }
+        
+        if (errou) {
+          amostrasErradas++;
+        }
 
-        Comunicador.addLog(esperada + "- " + resposta);
+        Comunicador.addLog(esperada + " -- " + resposta);
 
         linha = lerArq.readLine();
       }
 
       arq.close();
-      Comunicador.addLog(String.format("Erros: %d", erros));
+      porcAcerto = (100D / numAmostras) * ((numAmostras - amostrasErradas));
+      Comunicador.addLog(String.format("Total de acertos: %d/%d (%.2f%%)", (numAmostras - amostrasErradas), numAmostras, porcAcerto));
     } catch (FileNotFoundException ex) {
     } catch (IOException ex) {
     }
@@ -311,7 +319,7 @@ public class MLP {
   private void ajustarPesos() {
     //Ajustando pesos sinapticos da camada de saida
     for (int i = 0; i < gradienteCamadaSaida.length; i++) {
-      gradienteCamadaSaida[i] = ((double) saidaEsperada[i] - (double) saidaCamadaSaida[i]) * funcaoLogisticaDerivada(saidaCamadaSaida[i]);
+      gradienteCamadaSaida[i] = ((double) saidaEsperada[i] - (double) saidaCamadaSaida[i]) * funcaoLogisticaDerivada(potencialCamadaSaida[i]);
 
       for (int j = 0; j < NUM_NEU_CAMADA_ESCONDIDA + 1; j++) {
         pesosCamadaSaidaProximo[i][j] = pesosCamadaSaida[i][j] + (fatorMomentum * (pesosCamadaSaida[i][j] - pesosCamadaSaidaAnterior[i][j])) + (TAXA_APRENDIZAGEM * gradienteCamadaSaida[i] * saidaCamadaEscondida[j]);
@@ -326,7 +334,7 @@ public class MLP {
       }
 
       for (int j = 0; j < NUM_ENTRADAS + 1; j++) {
-        pesosCamadaEscondidaProximo[i][j] = pesosCamadaEscondida[i][j] + (fatorMomentum * (pesosCamadaEscondida[i][j] - pesosCamadaEscondidaAnterior[i][j])) + (TAXA_APRENDIZAGEM * gradienteCamadaEscondida[i] * entradas[j]);
+        pesosCamadaEscondidaProximo[i][j] = pesosCamadaEscondida[i][j] + (fatorMomentum * (pesosCamadaEscondida[i][j] - pesosCamadaEscondida[i][j])) + (TAXA_APRENDIZAGEM * gradienteCamadaEscondida[i] * entradas[j]);
       }
     }
     
