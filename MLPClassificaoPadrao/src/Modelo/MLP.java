@@ -224,10 +224,10 @@ public class MLP {
     BufferedReader lerArq;
     String linha;
     int numAmostras;
-    double erro;
+    double erroMedio;
     double valorParcial;
 
-    erro = 0D;
+    erroMedio = 0D;
     numAmostras = 0;
 
     try {
@@ -250,19 +250,19 @@ public class MLP {
         for (int i = 0; i < saidaCamadaSaida.length; i++) {
           valorParcial = valorParcial + Math.pow((double) (saidaEsperada[i] - saidaCamadaSaida[i]), 2D);
         }
-        erro = erro + (valorParcial / 2D);
+        erroMedio = erroMedio + (valorParcial / 2D);
 
         linha = lerArq.readLine();
       }
 
       arq.close();
-      erro = erro / (double) numAmostras;
+      erroMedio = erroMedio / (double) numAmostras;
 
     } catch (FileNotFoundException ex) {
     } catch (IOException ex) {
     }
 
-    return erro;
+    return erroMedio;
   }
 
   private void separarEntradas(String linha) {
@@ -319,10 +319,12 @@ public class MLP {
   private void ajustarPesos() {
     //Ajustando pesos sinapticos da camada de saida
     for (int i = 0; i < gradienteCamadaSaida.length; i++) {
-      gradienteCamadaSaida[i] = ((double) saidaEsperada[i] - (double) saidaCamadaSaida[i]) * funcaoLogisticaDerivada(potencialCamadaSaida[i]);
+      gradienteCamadaSaida[i] = (saidaEsperada[i] - saidaCamadaSaida[i]) * funcaoLogisticaDerivada(potencialCamadaSaida[i]);
 
       for (int j = 0; j < NUM_NEU_CAMADA_ESCONDIDA + 1; j++) {
-        pesosCamadaSaidaProximo[i][j] = pesosCamadaSaida[i][j] + (fatorMomentum * (pesosCamadaSaida[i][j] - pesosCamadaSaidaAnterior[i][j])) + (TAXA_APRENDIZAGEM * gradienteCamadaSaida[i] * saidaCamadaEscondida[j]);
+        pesosCamadaSaidaProximo[i][j] = pesosCamadaSaida[i][j] +
+                (fatorMomentum * (pesosCamadaSaida[i][j] - pesosCamadaSaidaAnterior[i][j])) +
+                (TAXA_APRENDIZAGEM * gradienteCamadaSaida[i] * saidaCamadaEscondida[j]);
       }
     }
 
@@ -330,18 +332,21 @@ public class MLP {
     for (int i = 0; i < gradienteCamadaEscondida.length; i++) {
       gradienteCamadaEscondida[i] = 0D;
       for (int j = 0; j < NUM_NEU_CAMADA_SAIDA; j++) {
-        gradienteCamadaEscondida[i] += gradienteCamadaSaida[j] * pesosCamadaSaidaProximo[j][i + 1] * funcaoLogisticaDerivada(potencialCamadaEscondida[i + 1]);
+        gradienteCamadaEscondida[i] += gradienteCamadaSaida[j] * pesosCamadaSaida[j][i + 1];
       }
+      gradienteCamadaEscondida[i] *= funcaoLogisticaDerivada(potencialCamadaEscondida[i + 1]);
 
       for (int j = 0; j < NUM_ENTRADAS + 1; j++) {
-        pesosCamadaEscondidaProximo[i][j] = pesosCamadaEscondida[i][j] + (fatorMomentum * (pesosCamadaEscondida[i][j] - pesosCamadaEscondida[i][j])) + (TAXA_APRENDIZAGEM * gradienteCamadaEscondida[i] * entradas[j]);
+        pesosCamadaEscondidaProximo[i][j] = pesosCamadaEscondida[i][j] +
+                (fatorMomentum * (pesosCamadaEscondida[i][j] - pesosCamadaEscondidaAnterior[i][j])) +
+                (TAXA_APRENDIZAGEM * gradienteCamadaEscondida[i] * entradas[j]);
       }
     }
     
     //Copiando pesos
     copiarMatriz(pesosCamadaEscondida, pesosCamadaEscondidaAnterior);
-    copiarMatriz(pesosCamadaSaida, pesosCamadaSaidaAnterior);
     copiarMatriz(pesosCamadaEscondidaProximo, pesosCamadaEscondida);
+    copiarMatriz(pesosCamadaSaida, pesosCamadaSaidaAnterior);
     copiarMatriz(pesosCamadaSaidaProximo, pesosCamadaSaida);
   }
 
